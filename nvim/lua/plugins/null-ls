@@ -1,0 +1,35 @@
+-- Null-LS Use external formatters and linters
+return {
+  "nvimtools/none-ls.nvim",
+  event = { "BufReadPre", "BufNewFile" },
+  dependencies = { "mason.nvim" },
+  opts = function()
+    local nls = require("null-ls")
+    return {
+      root_dir = require("null-ls.utils").root_pattern(
+        ".null-ls-root",
+        "composer.json",
+        ".neoconf.json",
+        "Makefile",
+        ".git"
+      ),
+      diagnostics_format = "#{m} (#{c}) [#{s}]", -- Makes PHPCS errors more readeable
+      sources = {
+        nls.builtins.formatting.stylua, -- You need to install stylua first
+        nls.builtins.formatting.shfmt, -- Sell formatter
+        nls.builtins.completion.spell, -- You still need to execute `:set spell`
+        nls.builtins.diagnostics.eslint, -- Add eslint to js projects
+        nls.builtins.diagnostics.php,
+        nls.builtins.diagnostics.phpcs.with({ -- Change how the php linting will work
+          prefer_local = "vendor/bin",
+        }),
+        nls.builtins.formatting.phpcbf.with({ -- Use the local installation first
+          prefer_local = "vendor/bin",
+        }),
+        nls.builtins.diagnostics.twigcs.with({ -- Use the local installation first
+          prefer_local = "vendor/bin",
+        }),
+      },
+    }
+  end,
+}
