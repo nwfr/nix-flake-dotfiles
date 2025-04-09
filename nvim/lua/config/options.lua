@@ -86,4 +86,4 @@ o.completeopt = "menuone,noselect"
 -- :p  : p, number of history cmd lines remembered
 -- %   : saves and restore the buffer list
 -- n...: fully qualified path to the viminfo files (non-retardedote that this is a literal "n")"
-o.viminfo = "'10,<100,:100,%,n~/.config/nvim/viminfo"
+o.viminfo = "'10,<100,:100,%,n~/.local/share/nvim/viminfo"
