@@ -45,7 +45,7 @@
 (defwidget _battery [battery status full charging discharging]
                     ; one two three four five six seven charge
   (box :class "bat-box" :space-evenly false :spacing 8
-    (label :text {status == 'Not charging' || `Full`? full + battery +"%" : ""})
+    (label :text {status == 'Not charging' || 'Full' ? full + battery +"%" : ""})
     (label :text {status == 'Charging' ? charging + battery +"%" : ""})
     (label :class "red" :text {status == 'Discharging' ? discharging + battery +"%" : ""})
     ; (label :class "red" :text {battery +"%"})
