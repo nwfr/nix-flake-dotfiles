@@ -3,13 +3,13 @@
   :stacking "fg"
   :windowtype "normal"
   :namespace "eww-sysinfo"
-  :geometry (geometry :width "50%" :height
-               "50%" :anchor "center")
+  :geometry (geometry :width "30%" :height
+               "30%" :anchor "center")
   (sysinfo_layout))
 
 (defpoll time :interval "5s"
-  :initial `date +'{"hour":"%H","min":"%M"}'`
-  `date +'{"hour":"%H","min":"%M"}'`)
+  :initial `date +'{"hour":"%H","min":"%M","day":"%d"}'`
+  `date +'{"hour":"%H","min":"%M","day":"%d"}'`)
 (defpoll net :interval "100s"
   :initial `N/A`
   `nmcli -t -f SIGNAL,ACTIVE device wifi \
@@ -19,8 +19,19 @@
   (box :class "layout-box" :space-evenly false :orientation "vertical"
         :style "background-color:  rgba(30, 30, 46,0.7)"
        ; :style "background-image: url('./wallpaper')"
+
+    (box :space-evenly false :hexpand false :vexpand true
+      (box :spacing 15 :class "tm-box" :space-evenly false
+            :valign "start" :halign "start"
+        (label :text "󱑂")
+        (label :text "${time.hour}:${time.min}")))
+    (box :space-evenly false :hexpand false :vexpand true
+      (box :spacing 15 :class "cal-box" :space-evenly false
+            :valign "start" :halign "start"
+        (label :text "󰸗")
+        (calendar)))
+
     (box :valign "start" :space-evenly false :spacing 25
-      ; (_sundial)
       (_battery :status {EWW_BATTERY.BAT0.status}
                 :battery {EWW_BATTERY.BAT0.capacity}
                 :full "󰁹" :charging "󰂄" :discharging "󰁺"
@@ -31,16 +42,11 @@
                 :okay "󱚽" :slow "󱛂")
       (label :text "|" :class "sep")
       (button :onclick "eww close sysinfo" :class "close-btn" "󰖭"))
-    (box :space-evenly false :hexpand true :vexpand true
-      (box :spacing 15 :class "tm-box" :space-evenly false
-            :valign "end" :halign "start"
-        (label :text "󱑂")
-        (label :text "${time.hour}  ${time.min}"))
        ; (_buttons :shutdown "poweroff" :reboot "reboot"
        ;          :logout "loginctl kill-session self"
        ;          :shutdown_icon "󰐥" :reboot_icon "󰜉"
        ;          :logout_icon "󰍃")
-                )))
+                ))
 
 (defwidget _battery [battery status full charging discharging]
                     ; one two three four five six seven charge
