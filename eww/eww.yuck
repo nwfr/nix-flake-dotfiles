@@ -1,6 +1,6 @@
 (defwindow sysinfo
   :monitor 0 ;; wayland users may need this
-  :stacking "fg"
+  :stacking "bg"
   :windowtype "normal"
   :namespace "eww-sysinfo"
   :geometry (geometry :width "30%" :height
