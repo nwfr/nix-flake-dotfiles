@@ -3,9 +3,12 @@
   :stacking "bg"
   :windowtype "normal"
   :namespace "eww-sysinfo"
-  :geometry (geometry :width "30%" :height
-               "30%" :anchor "center")
+  :geometry (geometry :width "100%" :height
+               "100%" :anchor "center")
   (sysinfo_layout))
+
+  (defpoll calendar_day :interval "1h" "date '+%d'")
+(defpoll calendar_year :interval "1h" "date '+%Y'")
 
 (defpoll time :interval "5s"
   :initial `date +'{"hour":"%H","min":"%M","day":"%d"}'`
@@ -13,8 +16,17 @@
 (defpoll net :interval "100s"
   :initial `N/A`
   `nmcli -t -f SIGNAL,ACTIVE device wifi \
-    | awk -F':' '{if($2=="yes")print$1}'`)
+    | awk -F':' '{if($2=="yes")print$1}'`
+    )
+  (defpoll wifi :interval "2s"
+  :initial `N/A`
+  `vnstat -i wlp6s0` ; | rg '\d\d\d\d-\d\d\s'` ; && vnstat -i wlp6s0 --live` ; -i wlp6s0 | rg 'rx:' | awk -F' ' '{print $2" "$3 " " $5 " " $6}'`
+  )
 
+  (defpoll lan :interval "2s"
+  :initial `N/A`
+  `vnstat -i enp5s0`; | grep '\d\d\d\d-\d\d\s' | awk -F' ' '{print $2" "$3 " " $5 " " $6}'`
+  )
 (defwidget sysinfo_layout []
   (box :class "layout-box" :space-evenly false :orientation "vertical"
         :style "background-color:  rgba(30, 30, 46,0.7)"
@@ -29,7 +41,7 @@
       (box :spacing 15 :class "cal-box" :space-evenly false
             :valign "start" :halign "start"
         (label :text "󰸗")
-        (calendar)))
+        (label :text {calendar_day + " " + calendar_year})))
 
     (box :valign "start" :space-evenly false :spacing 25
       (_battery :status {EWW_BATTERY.BAT0.status}
@@ -37,16 +49,23 @@
                 :full "󰁹" :charging "󰂄" :discharging "󰁺"
                 ; :one "󰂅" :two "󰂋" :three "󰢞" :four "󰢝"
                 ; :five "󰂈" :six "󰂇" :seven "󰢜"
-                )
+       )         )
+
+    (box :valign "start" :space-evenly false :spacing 25
       (_network :strength net :offline "󰖪" :excellent "󰖩" :good "󱛃"
-                :okay "󱚽" :slow "󱛂")
+                :okay "󱚽" :slow "󱛂")                
       (label :text "|" :class "sep")
-      (button :onclick "eww close sysinfo" :class "close-btn" "󰖭"))
-       ; (_buttons :shutdown "poweroff" :reboot "reboot"
-       ;          :logout "loginctl kill-session self"
-       ;          :shutdown_icon "󰐥" :reboot_icon "󰜉"
-       ;          :logout_icon "󰍃")
-                ))
+      ; (label :text {wifi})
+      )
+    (box :valign "start" :space-evenly false :spacing 25
+      (_network :strength net :offline "󰖪" :excellent "󰖩" :good "󱛃"
+                :okay "󱚽" :slow "󱛂")                
+      (label :text "|" :class "sep")
+      ; (label :text {lan})
+      )
+    (box :valign "start" :space-evenly false :spacing 25
+      (button :onclick "eww close sysinfo" :class "close-btn" "󰖭")
+                )))
 
 (defwidget _battery [battery status full charging discharging]
                     ; one two three four five six seven charge
@@ -72,17 +91,16 @@
     (label :text {strength == "" ? offline :
       strength < 26 ? slow :
         strength < 51 ? okay :
-          strength < 76 ? good : excellent})))
+          strength < 76 ? good : excellent})
 
-(defwidget _buttons [shutdown shutdown_icon reboot
-                    reboot_icon logout logout_icon]
+          ))
+
+(defwidget _buttons []
   (box :class "btns-box" :spacing 5
        :vexpand true :hexpand true
        :valign "end" :halign "end"
        :space-evenly false
-    (button :onclick shutdown shutdown_icon)
-    (button :onclick reboot reboot_icon)
-    (button :onclick logout logout_icon)))
+))
 
 ; (defwidget _sundial []
 ;   (label :class "sundial-lbl" :halign "end" :hexpand true
