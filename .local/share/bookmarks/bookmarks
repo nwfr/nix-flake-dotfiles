@@ -1,0 +1,30 @@
+#todo
+todo_draft	/home/n00r/.local/share/calcurse/draft
+#config
+hypr_cfg	/home/n00r/.config/hypr/hyprland.conf
+hypr_kb	/home/n00r/.config/hypr/configs/keybindings_us.conf
+#Backup
+include_backup	/home/n00r/.local/bin/cron/rsync_backup/include_list
+exclude_backup	/home/n00r/.local/bin/cron/rsync_backup/exclude_list
+filters_backup	/home/n00r/.local/bin/cron/rsync_backup/filters_list
+#Cheat
+alias_cht	/home/n00r/.local/share/cheatsheet/alias.mom
+keys_cht	/home/n00r/.local/share/cheatsheet/keybinding.mom
+lf_cht	/home/n00r/.local/share/cheatsheet/lf.mom
+ncmpcpp_cht	/home/n00r/.local/share/cheatsheet/ncmpcpp.mom
+icons_cht	/home/n00r/.local/share/cheatsheet/mdi
+nsxiv_cht	/home/n00r/.local/share/cheatsheet/sxiv.mom
+nvim_cht	/home/n00r/.local/share/cheatsheet/vim.mom
+#Bookmarks
+bookmarks	/home/n00r/.local/share/bookmarks/bookmarks
+#Shell
+aliasrc	/home/n00r/.config/shell/aliasrc
+bmdirs	/home/n00r/.config/shell/bm-dirs
+bmfiles	/home/n00r/.config/shell/bm-files
+input	/home/n00r/.config/shell/inputrc
+profile	/home/n00r/.config/shell/profile
+zsh	/home/n00r/.config/zsh/.zshrc
+nvim	/home/n00r/.config/nvim/lua
+
+#miscellaneous
+modified files include_list	/home/n00r/modified-setting-files-list
