@@ -93,7 +93,7 @@
         strength < 51 ? okay :
           strength < 76 ? good : excellent})
 
-          ))
+(label :text "${round(EWW_NET.enp5s0.NET_UP / 1000000, 2)}/${round(EWW_NET.enp5s0.NET_DOWN / 1000000, 2)}")))
 
 (defwidget _buttons []
   (box :class "btns-box" :spacing 5
